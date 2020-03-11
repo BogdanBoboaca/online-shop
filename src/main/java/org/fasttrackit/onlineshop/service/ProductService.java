@@ -1,10 +1,11 @@
 package org.fasttrackit.onlineshop.service;
 
 import org.fasttrackit.onlineshop.domain.Product;
-import org.fasttrackit.onlineshop.persistance.ProductRepository;
+import org.fasttrackit.onlineshop.persistence.ProductRepository;
 import org.fasttrackit.onlineshop.transfer.SaveProductRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,5 +35,29 @@ public class ProductService {
         return productRepository.save(product);
     }
 
+//
+//    public Product getProduct (long id){
+//        LOGGER.info("Retrieving product {}", id);
+//
+//        return productRepository.findById(id)
+//                //Lambda expression
+//                .orElseThrow(() -> new ResourceNotFoundException ("Product " + id + " not found."));
+//    }
+//
+//
+//
+//    public Product updateProduct(long id, SaveProductRequest request) {
+//        LOGGER.info("Updating product {}: {}", id, request);
+//        Product product = getProduct(id);
+//
+//        BeanUtils.copyProperties(request, product);
+//
+//        return productRepository.save(product);
+//    }
+//
+//    public void deleteProduct(long id) {
+//        LOGGER.info("Deleting product {}", id);
+//        productRepository.deleteById(id);
+//    }
 
 }
