@@ -1,6 +1,7 @@
 package org.fasttrackit.onlineshop;
 
 import org.fasttrackit.onlineshop.domain.Product;
+import org.fasttrackit.onlineshop.exception.ResourceNotFoundException;
 import org.fasttrackit.onlineshop.service.ProductService;
 import org.fasttrackit.onlineshop.transfer.SaveProductRequest;
 import org.hamcrest.CoreMatchers;
@@ -27,19 +28,7 @@ public class ProductServiceIntegrationTests {
 
     @Test
     void createProduct_whenValidRequest_thenProductIsCreated(){
-        SaveProductRequest request = new SaveProductRequest();
-        request.setName("Phone");
-        request.setQuantity(100);
-        request.setPrice(399.0);
-
-        Product product = productService.createProduct(request);
-
-        assertThat(product, notNullValue());
-        assertThat(product.getId(), greaterThan(0L));
-        assertThat(product.getName(), is(product.getName()));
-        assertThat(product.getPrice(), is(product.getPrice()));
-        assertThat(product.getQuantity(), is(product.getQuantity()));
-        assertThat(product.getImageUrl(), is(product.getImageUrl()));
+        createProduct();
     }
 
     @Test
@@ -55,26 +44,27 @@ public class ProductServiceIntegrationTests {
             assertThat("Unexpected Exception Type. ", e instanceof TransactionSystemException);
         }
     }
-//
-//    @Test
-//    void getProduct_whenExistingProduct_thenReturnProduct(){
-//        Product product = createProduct();
-//
-//        Product response = productService.getProduct(product.getId());
-//
-//        assertThat(response, notNullValue());
-//        assertThat(response.getId(), is(product.getId()));
-//        assertThat(response.getName(), is(product.getName()));
-//        assertThat(response.getPrice(), is(product.getPrice()));
-//        assertThat(response.getQuantity(), is(product.getQuantity()));
-//        assertThat(response.getImageUrl(), is(product.getImageUrl()));
-//    }
-//
-//    @Test
-//    void getProduct_whenNonExistingProduct_thenThrowResourceNotFoundException(){
-//        Assertions.assertThrows(ResourceNotFoundException.class, () -> productService.getProduct(999999));
-//    }
-//
+
+    @Test
+    void getProduct_whenExistingProduct_thenReturnProduct(){
+        Product product = createProduct();
+
+        Product response = productService.getProduct(product.getId());
+
+        assertThat(response, notNullValue());
+        assertThat(response.getId(), is(product.getId()));
+        assertThat(response.getName(), is(product.getName()));
+        assertThat(response.getPrice(), is(product.getPrice()));
+        assertThat(response.getQuantity(), is(product.getQuantity()));
+        assertThat(response.getDescription(), is(product.getDescription()));
+        assertThat(response.getImageUrl(), is(product.getImageUrl()));
+    }
+
+    @Test
+    void getProduct_whenNonExistingProduct_thenThrowResourceNotFoundException(){
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> productService.getProduct(999999));
+    }
+
 //    @Test
 //    void updateProduct_whenValidRequest_ThenReturnUpdatedProduct() {
 //        Product product = createProduct();
@@ -97,11 +87,29 @@ public class ProductServiceIntegrationTests {
 //
 //    @Test
 //    void deleteProduct_whenExistingProduct_thenProductDoesNotExistAnymore() {
-//        Product product = createPrdocut();
+//        Product product = createProduct();
 //
-//        prductService.deleteProduct(product.getId());
+//        productService.deleteProduct(product.getId());
 //
 //        Assertions.assertThrows(ResourceNotFoundException.class, () -> productService.getProduct(product.getId()));
 //
 //    }
+
+    private Product createProduct() {
+        SaveProductRequest request = new SaveProductRequest();
+        request.setName("iPhone");
+        request.setQuantity(100);
+        request.setPrice(399.0);
+
+        Product product = productService.createProduct(request);
+
+        assertThat(product, notNullValue());
+        assertThat(product.getId(), greaterThan(0L));
+        assertThat(product.getName(), is(product.getName()));
+        assertThat(product.getPrice(), is(product.getPrice()));
+        assertThat(product.getQuantity(), is(product.getQuantity()));
+        assertThat(product.getImageUrl(), is(product.getImageUrl()));
+
+        return product;
+    }
 }
