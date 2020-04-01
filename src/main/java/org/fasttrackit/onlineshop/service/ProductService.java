@@ -111,7 +111,6 @@ public class ProductService {
         return new PageImpl<>(productDtos, pageable, productsPage.getTotalElements());
     }
 
-
     public ProductResponse updateProduct(long id, SaveProductRequest request) {
         LOGGER.info("Updating product {}: {}", id, request);
         Product product = findProduct(id);
